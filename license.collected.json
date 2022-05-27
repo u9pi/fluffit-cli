@@ -1,0 +1,36 @@
+{
+    "electron": {
+        "name": "electron/electron",
+        "license": "https://github.com/electron/electron/blob/main/LICENSE"
+    },
+    "electron-builder": {
+        "name": "electron-userland/electron-builder",
+        "license": "https://github.com/electron-userland/electron-builder/blob/master/LICENSE"
+    },
+    "electron-store": {
+        "name": "sindresorhus/electron-store",
+        "license": "https://github.com/sindresorhus/electron-store/blob/main/license"
+    },
+    "dotenv": {
+        "name": "motdotla/dotenv",
+        "license": "https://github.com/motdotla/dotenv/blob/master/LICENSE"
+    },
+    "luxon": {
+        "name": "moment/luxon",
+        "license": "https://github.com/moment/luxon/blob/master/LICENSE.md"
+    },
+    "fluentui-system-icons": {
+        "name": "microsoft/fluentui-system-icons",
+        "license": "https://github.com/microsoft/fluentui-system-icons/blob/master/LICENSE",
+        "with": "https://github.com/microsoft/fluentui-system-icons/blob/master/NOTICE"
+    },
+    "gsap": {
+        "name": "greensock/gsap",
+        "license": "https://greensock.com/standard-license/"
+    },
+    "win-audio": {
+        "name": "fcannizzaro/win-audio",
+        "license": "https://github.com/fcannizzaro/win-audio/blob/master/LICENSE"
+    },
+    "...": "There may be more license."
+}

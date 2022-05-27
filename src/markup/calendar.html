@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+        <title>Calendar</title>
+        <link rel="stylesheet" href="../styles/var.css">
+        <link rel="stylesheet" href="../styles/main.css">
+    </head>
+    <body class="ff--exj5yz">
+        <div class="ff--1rb8qu ff--vhc5ej">
+            <div class="ff--65arh2 ff--xwctdp">
+                <div class="ff--6e4yk0 ff--5khxrs" style="display: grid">
+                    <header flu-fmt="WEEK" style="font-size: 11pt"></header>
+                    <span flu-fmt="DATE:FULL" style="font-size: 14pt; margin-top: 0.275em"></span>
+                </div>
+                <div class="ff--dwlnfi">
+                    <div class="ff--vhc5ej ff--cn79m9">
+                        <div class="ff--65arh2 ff--xwctdp">
+                            <header style="margin-block: 0.16em">
+                                <div class="ff--1yxhm3">
+                                    <div class="ff--1995h7 ff--hs1gw0 ff--repl6a fa--ukm fa--qik"
+                                        flu-btn="+bind" flu-bind="send|calendar|interact|get.calendar.previous|ical">
+                                        <figure class="ff--aegml1" flu-run="+bind" flu-bind="fuicon|calendar|Caret Left|f24">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="34" height="34" vytl>
+                                                <g>
+                                                    <path d="M28 34 18 24 28 14Z"></path>
+                                                </g>
+                                            </svg>
+                                        </figure>
+                                    </div>
+                                    <div class="ff--vafwf3">
+                                        <span flu-fmt="MONTH"></span>
+                                    </div>
+                                    <div class="ff--1995h7 ff--hs1gw0 ff--repl6a fa--ukm fa--k51"
+                                        flu-btn="+bind" flu-bind="send|calendar|interact|get.calendar.next|ical">
+                                        <figure class="ff--aegml1" flu-run="+bind" flu-bind="fuicon|calendar|Caret Right|f24">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="34" height="34" vytl>
+                                                <g>
+                                                    <path d="M20 34V14L30 24Z"></path>
+                                                </g>
+                                            </svg>
+                                        </figure>
+                                    </div>
+                                </div>
+                            </header>
+                            <div flu-run="+bind" flu-bind="send|calendar|interact|get.calendar|ical" flu-id="ical">
+            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

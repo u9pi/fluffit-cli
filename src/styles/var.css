@@ -1,0 +1,39 @@
+/* radius */
+:root {
+    --2ef: 12px;
+    --qul: 8px;
+}
+
+/* opacity */
+:root {
+    --v82: 87%;
+    --sac: 91%;
+    --j9r: 34%;
+    --eqy: 28%;
+    --9es: 65%;
+    --0jm: 54%;
+    --ntg: 87%;
+}
+
+/* border color */
+:root {
+    -border-colour: 'type(color[,HEX|RGB|HSL...], ?opacity)';
+    --798: hsla(233deg, 3%, 28%, var(--v82));
+    --gh8: hsla(227deg, 2%, 26%, var(--9es));
+}
+
+/* background */
+:root {
+    -back-ground: 'type(color[,HEX|RGB|HSL...], ?opacity)';
+    --k30: hsla(240deg, 5%, 16%, var(--v82));
+    --5ns: hsla(238deg, 4%, 20%, var(--9es));
+    --i48: hsla(0deg, 0%, 69%, var(--eqy));
+}
+
+/* font color */
+:root {
+    -fore-ground: 'type(color[,HEX|RGB|HSL...], ?opacity)';
+    --u1v: hsl(0deg, 0%, 94%);
+    --fpg: hsla(0deg, 0%, 87%);
+    --toh: hsl(0deg, 0%, 59%);
+}
