@@ -45,7 +45,6 @@ follow below:
 3. Open a windows terminal
 ```javascript
 Just press Windows(⊞) and X,
-(on other OS, Meta or Super)
 then I or A.
 /* A means Administrator. */
 ```
