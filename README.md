@@ -20,7 +20,6 @@ And I didn't include public folders.
 
 It does not include public folders.
 
-> public directory structure
 ```
 %FLUFFIT_ROOT%
 └┬ public
@@ -31,6 +30,7 @@ It does not include public folders.
   │└─ icon.ico
   └─ assets ー https://github.com/microsoft/fluentui-system-icons/tree/master/assets
 ```
+> public directory structure
 
 ## Installation
 
