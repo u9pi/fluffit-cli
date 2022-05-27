@@ -471,12 +471,6 @@ app['requestSingleInstanceLock']() ? (_ => {
             dialog['showErrorBox'] = func
         })(_ => {})
         //#endregion
-        d(_ => { browsers['dock']['webContents']['openDevTools']() }, ![])
-        d(_ => {
-            browsers['config']['show']()
-            browsers['config']['webContents']['openDevTools']()
-        }, ![])
-        d(_ => { browsers['about']['webContents']['openDevTools']() }, ![])
     }
     
     app['disableHardwareAcceleration']()
