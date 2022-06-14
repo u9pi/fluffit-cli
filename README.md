@@ -1,6 +1,6 @@
 # Fluffit
 
-<img src="https://raw.githubusercontent.com/u9pi/fluffit-cli/main/sample/fluffit-v0.1-beta.png" alt="Fluffit v0.1-beta" width="529"/>
+<img src="https://raw.githubusercontent.com/u9pi/fluffit-cli/main/sample/fluffit-v1.1.18-beta.png" alt="Fluffit v0.1-beta" width="529"/>
 
 Windows has restrictions on customization,
 
