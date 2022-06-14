@@ -1,0 +1,24 @@
+@font-face {
+    font-family: 'Ubuntu Mono';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/Ubuntu\ Mono/regular.ttf');
+}
+@font-face {
+    font-family: 'Ubuntu Mono';
+    font-style: italic;
+    font-weight: 400;
+    src: url('../fonts/Ubuntu\ Mono/italic.ttf');
+}
+@font-face {
+    font-family: 'Ubuntu Mono';
+    font-style: italic;
+    font-weight: 700;
+    src: url('../fonts/Ubuntu\ Mono/bold-italic.ttf');
+}
+@font-face {
+    font-family: 'Ubuntu Mono';
+    font-style: normal;
+    font-weight: 700;
+    src: url('../fonts/Ubuntu\ Mono/bold.ttf');
+}

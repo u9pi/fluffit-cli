@@ -1,0 +1,104 @@
+{
+    "name": "fluffit",
+    "version": "1.1.18-alpha",
+    "description": "top bar like linux.",
+    "author": "u9pi",
+    "license": "MIT",
+    "main": "./src/main/index.js",
+    "scripts": {
+        "start": "nodemon .",
+        "compile": "electron-webpack",
+        "dist": "yarn compile && yarn build",
+        "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=nulll",
+        "build": "yarn build:win32 && yarn build:win64",
+        "build:win64": "electron-builder --win --x64",
+        "build:win32": "electron-builder --win --ia32",
+        "watch:sass": "sass --watch static/styles/main.sass static/styles/main.css"
+    },
+    "dependencies": {
+        "dotenv": "^16.0.1",
+        "iohook": "^0.9.3",
+        "luxon": "^2.4.0",
+        "node-audio-volume-mixer": "^1.0.3",
+        "node-process-windows": "^0.0.2",
+        "registry-js": "^1.15.1",
+        "source-map-support": "^0.5.21",
+        "systeminformation": "^5.11.16"
+    },
+    "devDependencies": {
+        "electron": "12.2.3",
+        "electron-builder": "^23.0.3",
+        "electron-webpack": "^2.8.2",
+        "nodemon": "^2.0.16",
+        "sass": "^1.52.3",
+        "webpack": "4.42.1",
+        "webpack-merge": "^5.8.0"
+    },
+    "nodemonConfig": {
+        "verbose": true,
+        "ext": "html,js,json,css",
+        "exec": "electron-webpack dev",
+        "watch": [
+            "src",
+            "public",
+            "static"
+        ]
+    },
+    "iohook": {
+        "targets": [
+            "node-88",
+            "electron-87"
+        ],
+        "platforms": [
+            "win32",
+            "darwin"
+        ],
+        "arches": [
+            "x64",
+            "ia32"
+        ]
+    },
+    "electronWebpack": {
+        "commonSourceDirectory": "src",
+        "staticSourceDirectory": "static",
+        "title": true,
+        "main": {
+            "sourceDirectory": "src/main"
+        },
+        "renderer": {
+            "sourceDirectory": "src/renderer"
+        }
+    },
+    "build": {
+        "productName": "fluffit",
+        "appId": "u9pi.fluffit",
+        "asar": false,
+        "asarUnpack": "**/*.node",
+        "compression": "normal",
+        "removePackageScripts": false,
+        "win": {
+            "icon": "./static/icons/app/icon.ico",
+            "target": [
+                "zip",
+                "nsis"
+            ]
+        },
+        "nsis": {
+            "oneClick": false,
+            "perMachine": true,
+            "allowToChangeInstallationDirectory": true,
+            "deleteAppDataOnUninstall": true,
+            "installerIcon": "./static/icons/app/icon.ico",
+            "uninstallerIcon": "./static/icons/app/icon.ico",
+            "uninstallDisplayName": "${productName}"
+        },
+        "files": [
+            "**/*"
+        ],
+        "directories": {
+            "buildResources": "static",
+            "output": "dist",
+            "app": "."
+        }
+    }
+}

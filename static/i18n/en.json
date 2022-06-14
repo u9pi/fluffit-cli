@@ -1,0 +1,11 @@
+{
+    "menu.startup.enable": "Turn on Autostart",
+    "menu.startup.disable": "Turn off Autostart",
+    "menu.close": "Close",
+    "system.settings": "Settings",
+    "system.lock": "Lock",
+    "system.power.suspend": "Suspend",
+    "system.power.restart": "Restart",
+    "system.power.shutdown": "Shutdown",
+    "system.power.logoff": "Log Out"
+}
