@@ -10,7 +10,7 @@
         "compile": "electron-webpack",
         "dist": "yarn compile && yarn build",
         "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=nulll",
-        "build": "yarn build:win32 && yarn build:win64",
+        "build": "yarn build:win64",
         "build:win64": "electron-builder --win --x64",
         "build:win32": "electron-builder --win --ia32",
         "watch:sass": "sass --watch static/styles/main.sass static/styles/main.css"
