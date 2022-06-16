@@ -112,6 +112,7 @@ let __u = {
     5989: t => {
         if (t[1]) {
             __x[parseInt(t[0])].app.setLoginItemSettings({
+                name: `${process.env.name}.at`,
                 openAtLogin: t[1] === 'true' ? true : false,
                 path: __x[parseInt(t[0])].app.getPath('exe'),
             })

@@ -1,10 +1,7 @@
 const { exec } = require('child_process')
-const { graphics } = require('systeminformation')
 const { NodeAudioVolumeMixer } = require('node-audio-volume-mixer')
-const { HKEY, RegistryValueType, enumerateValues, setValue } = require('registry-js')
 const { ipcRenderer } = require('electron')
 const { DateTime } = require('luxon')
-const { readFileSync } = require('fs')
 
 const rate = 1
 const watingTime = 275

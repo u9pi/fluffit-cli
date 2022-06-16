@@ -1,6 +1,6 @@
 {
     "name": "fluffit",
-    "version": "1.1.18-alpha",
+    "version": "1.2.2",
     "description": "top bar like linux.",
     "author": "u9pi",
     "license": "MIT",
@@ -23,7 +23,7 @@
         "node-process-windows": "^0.0.2",
         "registry-js": "^1.15.1",
         "source-map-support": "^0.5.21",
-        "systeminformation": "^5.11.16"
+        "systeminformation": "^5.11.20"
     },
     "devDependencies": {
         "electron": "12.2.3",
@@ -72,16 +72,13 @@
     "build": {
         "productName": "fluffit",
         "appId": "u9pi.fluffit",
+        "artifactName": "fluffit-${version}-${os}.${ext}",
         "asar": false,
         "asarUnpack": "**/*.node",
         "compression": "normal",
         "removePackageScripts": false,
         "win": {
-            "icon": "./static/icons/app/icon.ico",
-            "target": [
-                "zip",
-                "nsis"
-            ]
+            "icon": "./static/icons/app/icon.ico"
         },
         "nsis": {
             "oneClick": false,
