@@ -1,11 +1,13 @@
 {
-    "menu.startup.enable": "자동 시작을 켜기",
-    "menu.startup.disable": "자동 시작을 끄기",
-    "menu.close": "닫기",
+    "runtime.test.name": "한국어",
+    "runtime.test.test": "test;korean;runtime.fluffit-client",
     "system.settings": "설정",
     "system.lock": "잠금",
     "system.power.suspend": "절전",
     "system.power.restart": "다시 시작",
     "system.power.shutdown": "전원 끄기",
-    "system.power.logoff": "로그아웃"
+    "system.power.logoff": "로그아웃",
+    "menu.close": "닫기",
+    "menu.startup": "플루핏 자동 시작",
+    "menu.lang.select": "언어 선택"
 }

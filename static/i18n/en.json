@@ -1,11 +1,13 @@
 {
-    "menu.startup.enable": "Turn on Autostart",
-    "menu.startup.disable": "Turn off Autostart",
-    "menu.close": "Close",
+    "runtime.test.name": "English",
+    "runtime.test.test": "test;english;runtime.fluffit-client",
     "system.settings": "Settings",
     "system.lock": "Lock",
     "system.power.suspend": "Suspend",
     "system.power.restart": "Restart",
     "system.power.shutdown": "Shutdown",
-    "system.power.logoff": "Log Out"
+    "system.power.logoff": "Log Out",
+    "menu.close": "Close",
+    "menu.startup": "Startup",
+    "menu.lang.select": "Select a language"
 }

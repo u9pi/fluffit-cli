@@ -4,11 +4,13 @@ const { NodeAudioVolumeMixer } = require('node-audio-volume-mixer')
 const { HKEY, RegistryValueType, enumerateValues, setValue } = require('registry-js')
 const { ipcRenderer } = require('electron')
 const { DateTime } = require('luxon')
+const { readFileSync } = require('fs')
 
 const rate = 1
 const watingTime = 275
 const timeSync = 'time-sync'
 const calendarControl = 'calendar-control'
+const fetchLang = 'fetch-langfile'
 
 const receive = (channel, listener) => ipcRenderer.on(channel, listener)
 const refer = (channel, ...args) => ipcRenderer.send(channel || process.env.global, args)
@@ -19,8 +21,10 @@ const wst = (...scripts) => {
     return scripts
 }
 
+const create = tag => document.createElement(tag)
+const createNS = (nURI, tag) => document.createElementNS(nURI, tag)
 const query = selector => document.querySelector(selector)
-const text = (selector, content) => query(selector).textContent = content
+const text = (selector, content) => { try { query(selector).textContent = content } catch (err) { (query('#exception-handle-elem>span') || query('#exception-handle')).textContent = `QueryNotFound${/(\w:)\\([\\\w]+)\\([\w]+.\w+)([\:\d+]+)$/.exec(err.stack)[4]}` }}
 const event = (selector, type, listener) => query(selector).addEventListener(type, listener)
 const press = (selector, listener, downListener) => {
     if (listener) query(selector).addEventListener('mouseup', listener)
@@ -31,8 +35,7 @@ const overed = (selector, listener, leaveListener) => {
     if (leaveListener) query(selector).addEventListener('mouseleave', leaveListener)
 }
 
-const translate = (t, i) => JSON.parse(process.env.i18n)[i][t]
-
+const translate = (t, i) => { try { return JSON.parse(process.env.i18n)[i][t] } catch { return JSON.parse(process.env.i18n)['en'][t] }}
 const sliderBounds = (t, p) => [p - 15 + ((100 - p) * ((100 / t) * 16 / 100)), 100 - p - 4.2 - ((100 - p) * ((100 / t) * 16 / 100))]
 
 const date = (t = new Date()) => [t.getFullYear(), t.getMonth() + 1, t.getDate()]
@@ -105,75 +108,94 @@ const calendarForm = t => {
 const master = n => !isNaN(n) ? NodeAudioVolumeMixer.setMasterVolumeLevelScalar(Number(n / 100)) : typeof n === 'boolean' ? NodeAudioVolumeMixer.muteMaster(Boolean(n)) : Math.round(NodeAudioVolumeMixer.getMasterVolumeLevelScalar() * 100)
 const session = (t, n) => !t ? null : (s => !isNaN(n) ? NodeAudioVolumeMixer.setAudioSessionVolumeLevelScalar(s.pid, Number(n / 100)) : typeof n === 'boolean' ? NodeAudioVolumeMixer.setAudioSessionMute(s.pid, Boolean(n)) : Math.round(NodeAudioVolumeMixer.getAudioSessionVolumeLevelScalar(s.pid) * 100))(NodeAudioVolumeMixer.getAudioSessionProcesses().find(f => f.name === !/\.exe$/.test(t) ? t += '.exe' : t))
 
+const local = (t, d) => t && d ? (_ => { localStorage.setItem(t, d); return d })() : (t && !d) ? localStorage.getItem(t) : !t && !d ? localStorage : null
+
+const isDev = process.env.NODE_ENV === 'development'
+const dev = t => isDev ? t() : undefined
+
 window.onload = _ => {
+    let localang = local('STU.FF.GLOBAL.LANG')
+    localang = local('STU.FF.GLOBAL.LANG', !localang ? navigator.language : localang)
+
+    dev(_ => {
+        const d = document.querySelectorAll('.ff--p0l7s5')
+        for (let i = 0; i < d.length; i++) {
+            if (d[i].id === 'error') d[i].querySelector('span').textContent = 'Peaceful'
+            d[i].classList.remove('ff--miu0pc')
+            d[i].classList.remove('ff--p0l7s5')
+        }
+    })
+
     cmd(...wst(
-        `var __a = document.body`,
-        `var __b = document.querySelector('#top')`,
-        `var __c = document.querySelector('#date')`,
-        `var __d = document.querySelector('#start')`,
-        `var __e = document.querySelector('#menu')`,
-        `var __f = document.querySelector('#calendar')`,
-        `var __g = document.querySelector('#system')`,
-        `var __h = false, __i = false , __j = false`,
-        `var __k = document.createElement('style')`,
-        `var __l = document.querySelector('#volume')`,
-        `var __m = document.querySelector('#volume-help')`,
-        `var __n = document.querySelector('#volume-state')`,
-        `var __o = document.createElement('style')`,
-        `var __p = document.querySelector('#bright')`,
-        `var __q = document.querySelector('#bright-help')`,
-        `var __r = document.querySelector('#bright-state')`,
-        `var __s = 0, __t = document.querySelector('#settings>figure'), __u = null`,
+        `var body = document.body`,
+        `var menu = document.querySelector('#menu')`,
+        `var menuPlow = document.querySelector('#menu>div')`,
+        `var menuLang = document.querySelector('#menu-language')`,
+        `var menuProps = false`,
+        `var calendar = document.querySelector('#calendar')`,
+        `var calendarState = false`,
+        `var system = document.querySelector('#system')`,
+        `var systemState = false`,
+        `var systemProps = false`,
+        `var volume = document.querySelector('#volume')`,
+        `var volumeHelp = document.querySelector('#volume-help')`,
+        `var volumeState = document.querySelector('#volume-state')`,
+        `var volumeStyle = document.createElement('style')`,
+        `var bright = document.querySelector('#bright')`,
+        `var brightHelp = document.querySelector('#bright-help')`,
+        `var brightStyle = document.createElement('style')`,
+        `var gear = document.querySelector('#settings>figure'), gearDegree = 0, gearInt = null`,
     ))
 
-    setTimeout(_ => cmd(...wst(`__a.classList.remove('ff--lrvqeq')`)), 1250)
+    setTimeout(_ => cmd(...wst(`body.classList.remove('ff--lrvqeq')`)), 1250)
 
     setInterval(() => {
-        text('#menu-startup>span',  enumerateValues(HKEY.HKEY_CURRENT_USER,
-                'SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run')
-            .find(v => v.name === 'fluffit.at')
-            ? translate('menu.startup.disable', navigator.language)
-            : translate('menu.startup.enable', navigator.language))
-        text('#menu-close>span', translate('menu.close', navigator.language))
-        text('#settings>span', translate('system.settings', navigator.language))
-        text('#lock>span', translate('system.lock', navigator.language))
-        text('#suspend>span', translate('system.power.suspend', navigator.language))
-        text('#restart>span', translate('system.power.restart', navigator.language))
-        text('#hardware-shutdown>span', translate('system.power.shutdown', navigator.language))
-        text('#logout>span', translate('system.power.logoff', navigator.language))
+        text('#menu-language>span', translate('menu.lang.select', localang))
+        text('#menu-startup>span', translate('menu.startup', localang))
+        text('#menu-close>span', translate('menu.close', localang))
+        text('#settings>span', translate('system.settings', localang))
+        text('#lock>span', translate('system.lock', localang))
+        text('#suspend>span', translate('system.power.suspend', localang))
+        text('#restart>span', translate('system.power.restart', localang))
+        text('#hardware-shutdown>span', translate('system.power.shutdown', localang))
+        text('#logout>span', translate('system.power.logoff', localang))
     }, _[604])
 
-    graphics().then(d => {
-        for (let i = 0; i < d.displays.length; i++) {
-            if (d.displays[i].main) {
-                let p = d.displays[i]
-                cmd(...wst(
-                    `__a.style.setProperty('--primary-display-width', '${p.currentResX}px')`,
-                    `__a.style.setProperty('--primary-display-height', '${p.currentResY}px')`,
-                    `__a.style.setProperty('--dock-height', '27px')`,
-                    `__a.style.setProperty('--calendar-width', \`\${__f.clientWidth}px\`)"`))}}})
+    cmd(...wst(
+        `body.style.setProperty('--primary-display-width', '${screen.width}px')`,
+        `body.style.setProperty('--primary-display-height', '${screen.height}px')`,
+        `body.style.setProperty('--dock-height', '27px')`,
+        `body.style.setProperty('--calendar-width', \`\${calendar.clientWidth}px\`)"`))
 
     event('#top', 'contextmenu', _ => cmd(...wst(
-        `__e.classList.remove('ff--miu0pc')`,
-        `__e.focus()`,
-        `__a.style.setProperty('--context-x', '${parseInt(/(\d+)(pt|px|pc|em|rem|vw|vh|vmin|vmax|%)/.exec(query('body').style.getPropertyValue('--primary-display-width'))[1]) < _.x + query('#menu').clientWidth ? _.x - query('#menu').clientWidth : _.x}px')`,
-        `__a.style.setProperty('--context-y', '${_.y}px')`)))
-    event('#menu', 'blur', _ => cmd(...wst(`__e.classList.add('ff--miu0pc')`)))
+        `body.style.setProperty('--context-x', '${parseInt(/(\d+)(pt|px|pc|em|rem|vw|vh|vmin|vmax|%)/.exec(query('body').style.getPropertyValue('--primary-display-width'))[1]) < _.x + query('#menu').clientWidth ? _.x - query('#menu').clientWidth : _.x}px')`,
+        `body.style.setProperty('--context-y', '${_.y}px')`,
+        `setTimeout(_ => { menu.classList.remove('ff--miu0pc') }, 6)`,
+        `menu.focus()`)))
+    event('#menu', 'blur', _ => cmd(...wst(`if (!menuProps) { menuPlow.removeAttribute('index'); menu.classList.add('ff--miu0pc') }`)))
 
-    event('#menu-startup', 'click', _ => {
-        enumerateValues(HKEY.HKEY_CURRENT_USER, 'SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run').find(v => v.name === process.env.at)
-        ? exec(`REG DELETE "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run" /v "${process.env.at}" /f`)
-        : setValue(HKEY.HKEY_CURRENT_USER, 'SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run', 'fluffit.at', RegistryValueType.REG_SZ, process.env.exepath)
-    })
+    event('#return-menu', 'click', _ => query('#menu>div').removeAttribute('index', 0))
+    
+    event('#menu-language', 'click', _ => query('#menu>div').setAttribute('index', 0))
+    cmd(`set-channel ${fetchLang} || get-index 637 __static/i18n`)
+    receive(fetchLang, (_, d) => { const l = Object.entries(d); for (let i = 0; i < l.length; i++) { query('#section-language').appendChild((_ => { const e = create('div'), t = create('span'); t.textContent = l[i][1]['runtime.test.name']; e.classList.add('ff--23qi14', 'ff--0a6crv', 'ff--fluent', 'ff--fluent-ext'); e.appendChild(t); if (localang === l[i][0]) { const f = create('figure'), s = createNS('http://www.w3.org/2000/svg', 'svg'), p = createNS('http://www.w3.org/2000/svg', 'path'); f.style.marginRight = '0.4em'; s.setAttributeNS(null, 'width', 24); s.setAttributeNS(null, 'height', 24); s.setAttributeNS(null, 'viewBox', '0 0 24 24'); p.setAttribute('d', 'm8.5 16.586-3.793-3.793a1 1 0 0 0-1.414 1.414l4.5 4.5a1 1 0 0 0 1.414 0l11-11a1 1 0 0 0-1.414-1.414L8.5 16.586Z'); p.setAttribute('fill', 'none'); s.appendChild(p), f.appendChild(s), e.appendChild(f) } else { e.classList.add('ff--ifv85n'); e.addEventListener('click', _ => { local('STU.FF.GLOBAL.LANG', l[i][0]); location.reload() })} return e })())}})
+    
+    overed('#menu-startup', _ => cmd(...wst(`menuProps = true`)), _ => cmd(...wst(`menuProps = false`, `menu.focus()`)))
+    
+    cmd(`set-channel test || get-index 5989 1`)
+    receive('test', (_, d) => query('#menu-startup input').checked = d.openAtLogin)
+    event('#menu-startup', 'click', _ => query('#menu-startup input').click())
+    event('#menu-startup input', 'input', e => cmd(`get-index 5989 1 ${e.target.checked}`))
+
     event('#menu-close', 'click', _ => close())
 
-    setInterval(_ => cmd(`set-channel ${timeSync} || get-index 7426 ${navigator.language} "ccc dd HH:mm" 0`), 10)
+    setInterval(_ => cmd(`set-channel ${timeSync} || get-index 7426 ${localang} "ccc dd HH:mm" 0`), 10)
     receive(timeSync, (_, d) => cmd(...wst(`document.querySelector('#date').textContent = '${d}'`)))
     
     let month = monthCalc(0, date())
 
-    event('#date', 'click', _ => cmd(...wst(`if (!__h) { __f.classList.remove('ff--miu0pc'); __f.focus(); __h = true }`)))
-    event('#calendar', 'blur', _ => cmd(...wst(`if (__h) { __f.classList.add('ff--miu0pc'); setTimeout(_ => { __h = false }, ${watingTime}) }`)))
+    event('#date', 'click', _ => cmd(...wst(`if (!calendarState) { calendar.classList.remove('ff--miu0pc'); calendar.focus(); calendarState = true }`)))
+    event('#calendar', 'blur', _ => cmd(...wst(`if (calendarState) { calendar.classList.add('ff--miu0pc'); setTimeout(_ => { calendarState = false }, ${watingTime}) }`)))
     event('#calendar', 'mousewheel', e => cmd(`set-channel ${calendarControl} || get-index 4561 ${monthCalc(0 < e.deltaY ? 1 : -1, month).join(' ')}`))
 
     cmd(`set-channel ${calendarControl} || get-index 4561 ${month.join(' ')}`)
@@ -181,29 +203,29 @@ window.onload = _ => {
     event('#next-calendar', 'click', _ => cmd(`set-channel ${calendarControl} || get-index 4561 ${monthCalc(1, month).join(' ')}`))
     
     receive(calendarControl, (_, d) => {
-        var b = { 63: navigator.language, 78: { 6: 'ff--uydj6d ff--wk5zo1', 1: 'ff--keskh8 ff--dy4sas' }}
+        var b = { 63: localang, 78: { 6: 'ff--uydj6d ff--wk5zo1', 1: 'ff--keskh8 ff--dy4sas' }}
         calendarForm([['#calendar-mini',
             ['#calendar-week', '#calendar-month', '#calendar-current']],
             Buffer.from(JSON.stringify(d), 'utf8').toString('base64'), 
             Buffer.from(JSON.stringify(b), 'utf8').toString('base64')])
     })
 
-    event('#start', 'click', _ => cmd(...wst(`if (!__i) { __g.classList.remove('ff--miu0pc'); __g.focus(); __i = true }`)))
-    event('#system', 'blur', _ => cmd(...wst(`if (__i && !__j) { __g.classList.add('ff--miu0pc'); setTimeout(_ => { __i = false }, ${watingTime}) }`)))
+    event('#start', 'click', _ => cmd(...wst(`if (!systemState) { system.classList.remove('ff--miu0pc'); system.focus(); systemState = true }`)))
+    event('#system', 'blur', _ => cmd(...wst(`if (systemState && !systemProps) { system.classList.add('ff--miu0pc'); setTimeout(_ => { systemState = false }, ${watingTime}) }`)))
 
-    overed('#volume', _ => cmd(...wst(`__j = true`)), _ => cmd(...wst(`__j = false`, `__g.focus()`)))
-    overed('#bright', _ => cmd(...wst(`__j = true`)), _ => cmd(...wst(`__j = false`, `__g.focus()`)))
+    overed('#volume', _ => cmd(...wst(`systemProps = true`)), _ => cmd(...wst(`systemProps = false`, `system.focus()`)))
+    overed('#bright', _ => cmd(...wst(`systemProps = true`)), _ => cmd(...wst(`systemProps = false`, `system.focus()`)))
 
     const volumeSlider = sliderBounds(query('#volume').clientWidth, master())
     const brightSlider = sliderBounds(query('#bright').clientWidth, 100)
 
     cmd(...wst(
-        `__l.appendChild(__k)`,
-        `__p.appendChild(__o)`,
-        `__k.textContent = '#volume::before { width: ${volumeSlider[0]}% } #volume::after { width: ${volumeSlider[1]}% }'`,
-        `__o.textContent = '#bright::before { width: ${brightSlider[0]}% } #bright::after { width: ${brightSlider[1]}% }'`,
-        `__l.value = ${master()}; __m.textContent = '${master()}%'`,
-        `__p.value = 100; __q.textContent = '100%'`))
+        `volume.appendChild(volumeStyle)`,
+        `bright.appendChild(brightStyle)`,
+        `volumeStyle.textContent = '#volume::before { width: ${volumeSlider[0]}% } #volume::after { width: ${volumeSlider[1]}% }'`,
+        `brightStyle.textContent = '#bright::before { width: ${brightSlider[0]}% } #bright::after { width: ${brightSlider[1]}% }'`,
+        `volume.value = ${master()}; volumeHelp.textContent = '${master()}%'`,
+        `bright.value = 100; brightHelp.textContent = '100%'`))
 
     overed('#volume', _ => {
         setInterval(_ => {
@@ -211,17 +233,17 @@ window.onload = _ => {
             const slider = sliderBounds(clientWidth, master())
             master(parseInt(value))
             cmd(...wst(
-                `__m.textContent = '${value}%'`,
-                `__k.textContent = '#volume::before { width: ${slider[0]}% } #volume::after { width: ${slider[1]}% }'"`)) /* Fixed 210 pixels on system element */
-            value <= 0 ? cmd(...wst(`__n.setAttribute('index', 0)`))
-            : value < 21 ? cmd(...wst(`__n.setAttribute('index', 1)`))
-            : value < 66 ? cmd(...wst(`__n.setAttribute('index', 2)`))
-            : cmd(...wst(`__n.setAttribute('index', 3)`))
+                `volumeHelp.textContent = '${value}%'`,
+                `volumeStyle.textContent = '#volume::before { width: ${slider[0]}% } #volume::after { width: ${slider[1]}% }'"`)) /* Fixed 210 pixels on system element */
+            value <= 0 ? cmd(...wst(`volumeState.setAttribute('index', 0)`))
+            : value < 21 ? cmd(...wst(`volumeState.setAttribute('index', 1)`))
+            : value < 66 ? cmd(...wst(`volumeState.setAttribute('index', 2)`))
+            : cmd(...wst(`volumeState.setAttribute('index', 3)`))
         }, rate)
     })
 
-    press('#volume', _ => cmd(...wst(`__m.classList.add('ff--miu0pc')`)), _ => cmd(...wst(`__m.classList.remove('ff--miu0pc')`)))
-    overed('#settings', _ => cmd(...wst(`__u = setInterval(_ => { __s += 2; __t.style.setProperty('transform', \`rotateZ(\${__s}deg)\`) }, 1)`)), _ => cmd(...wst(`clearInterval(__u)`)))
+    press('#volume', _ => cmd(...wst(`volumeHelp.classList.add('ff--miu0pc')`)), _ => cmd(...wst(`volumeHelp.classList.remove('ff--miu0pc')`)))
+    overed('#settings', _ => cmd(...wst(`gearInt = setInterval(_ => { gearDegree += 2; gear.style.setProperty('transform', \`rotateZ(\${gearDegree}deg)\`) }, 1)`)), _ => cmd(...wst(`clearInterval(gearInt)`)))
 
     event('#settings', 'click', _ => exec('start ms-settings:'))
     event('#lock', 'click', _ => exec('start %WINDIR%\\System32\\rundll32.exe user32.dll,LockWorkStation'))

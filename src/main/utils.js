@@ -1,6 +1,23 @@
 const __x = []
 let __u = {
     298: t => Array.isArray(t) ? t.sort() : t,
+    637: t => {
+        const { join, resolve } = require('path')
+        const { readdirSync, readFileSync } = require('fs')
+        const p = resolve(/__static/.test(t[0]) ? t[0].replace(/__static/, __static) : /__dirname/.test(t[0]) ? t[0].replace(/__dirname/, __dirname) : t[0])
+        const d = readdirSync(p)
+        const l = {}
+        for (let i = 0; i < d.length; i++) {
+            const f = {}
+            const e = Object.entries(Object.assign({}, Object.entries(JSON.parse(readFileSync(join(p, d[i])))).filter(([k]) => /^runtime\..+/.test(k))))
+            for (let i = 0; i < e.length; i++) {
+                const [_, v] = e[i]
+                f[v[0]] = v[1]
+            }
+            l[d[i].replace(/([\w_-]+)(\..+)?(\.json)/, '$1')] = f
+        }
+        return l
+    },
     971: (b, c) => {
         const e = {
             735: t => {
@@ -92,6 +109,16 @@ let __u = {
         return g
     },
     5736: t => !isNaN(t) ? __x[t] : __x,
+    5989: t => {
+        if (t[1]) {
+            __x[parseInt(t[0])].app.setLoginItemSettings({
+                openAtLogin: t[1] === 'true' ? true : false,
+                path: __x[parseInt(t[0])].app.getPath('exe'),
+            })
+        } else {
+            return __x[parseInt(t[0])].app.getLoginItemSettings()
+        }
+    },
     7426: t => __x[parseInt(t[2])].DateTime.now().setLocale(t[0]).toFormat(t[1]),
     12517: (t, p, d) => {
         return new Promise(r => {

@@ -11,12 +11,13 @@
 
     __[__.length - 1][3595](__[5])
     __[__.length - 1][3595](__[1])
+    __[__.length - 1][3595](__[4])
 
     __[__.length - 1][12517](__[__.length - 1][5736](1), {
         title: 'fluffit', icon: `${__static}/icons/app/64x64.png`,
         backgroundColor: '#00000000', x: 0, y: 0, frame: false, show: false, titleBarStyle: 'hidden', transparent: true,
         movable: false, resizable: false, maximizable: false, skipTaskbar: true,
-        webPreferences: { contextIsolation: false, nodeIntegration: true, preload: __[4].join(process.cwd(), process.env.NODE_ENV === 'development' ? 'src/main' : 'resources/app/src/main', 'preload.js') },
+        webPreferences: { contextIsolation: false, nodeIntegration: true, preload: __[4].join(process.env.NODE_ENV === 'development' ? `${process.cwd()}/src/main` : `${__[__.length - 1][5736](2).parse(__[__.length - 1][5736](1).app.getPath('exe')).dir}/resources/app/src/main`, 'preload.js')},
     }).then(b => {
         const { width, height } = __[1].screen.getPrimaryDisplay().bounds
         b.setBounds({ width, height })
